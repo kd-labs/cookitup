@@ -3,6 +3,9 @@ import fracty from "fracty";
 
 class RecipeView {
   #parentContainer = document.querySelector(".recipe");
+  #errorMessage =
+    "Could not find recipe of that id. Please try with another one";
+  #successMessage;
   #recipe;
 
   #clear() {
@@ -143,6 +146,32 @@ class RecipeView {
     this.#clear();
     this.#parentContainer.insertAdjacentHTML("afterbegin", spinnerMarkup);
   }
+
+  renderError = function (message = this.#errorMessage) {
+    const errorMarkup = `<div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>`;
+    this.#clear();
+    this.#parentContainer.insertAdjacentHTML("afterbegin", errorMarkup);
+  };
+
+  renderSuccess = function (message = this.#successMessage) {
+    const successMarkup = `<div class="message">
+            <div>
+              <svg>
+                <use href="${icons}#icon-smile"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>`;
+    this.#clear();
+    this.#parentContainer.insertAdjacentHTML("afterbegin", successMarkup);
+  };
 
   addHandlerRender(fn) {
     /**

@@ -4,17 +4,17 @@ import { fetchTimeout } from "./config";
 export const getJson = async function (url) {
   try {
     const res = await Promise.race([fetch(url), timeout(fetchTimeout)]);
+    const recipeData = await res.json();
     /**
      *  Handling failed fetch responses
      */
     if (!res.ok) {
       throw new Error(`${recipeData.message}(${res.status})`);
     }
-    const recipeData = await res.json();
 
     return recipeData;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 

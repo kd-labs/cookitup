@@ -10,7 +10,7 @@ export const loadRecipe = async function (recipeId) {
     const recipeData = await getJson(`${API_URL}/${recipeId}`);
     const { recipe } = recipeData.data;
 
-    console.log(recipe);
+    // console.log(recipe);
 
     state.recipe = {
       id: recipe.id,
@@ -23,8 +23,9 @@ export const loadRecipe = async function (recipeId) {
       cookingTime: recipe.cooking_time,
     };
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (error) {
-    console.log(error);
+    console.log(error + "\nfrom model");
+    throw error;
   }
 };

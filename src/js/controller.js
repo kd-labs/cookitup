@@ -31,11 +31,9 @@ const fetchRecipe = async function () {
     const { recipe } = model.state;
 
     recipeView.render(recipe);
-
-    // console.log(res, recipeData);
   } catch (err) {
-    alert(err);
     console.log(err);
+    recipeView.renderError();
   }
 };
 
