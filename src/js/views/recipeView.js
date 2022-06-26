@@ -1,8 +1,6 @@
 import icons from "url:../../img/icons.svg";
 import fracty from "fracty";
 
-console.log(fracty);
-
 class RecipeView {
   #parentContainer = document.querySelector(".recipe");
   #recipe;
@@ -144,6 +142,20 @@ class RecipeView {
 
     this.#clear();
     this.#parentContainer.insertAdjacentHTML("afterbegin", spinnerMarkup);
+  }
+
+  addHandlerRender(fn) {
+    /**
+     * calling async method to fetch recipe detail on window url hashchangeevent
+     */
+
+    /**
+     * calling async method to fetch recipe detail on window load event
+     */
+
+    ["hashchange", "load"].forEach((event) =>
+      window.addEventListener(event, fn)
+    );
   }
 }
 

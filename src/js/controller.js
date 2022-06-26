@@ -4,22 +4,6 @@ import "regenerator-runtime/runtime"; // polyfilling async/await
 import * as model from "./model";
 import recipeView from "./views/recipeView";
 
-// const recipeContainer = document.querySelector(".recipe");
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
-/**
- *  function to render spiiner to any parent element
- */
-
-recipeView.renderSpinner();
-
 /**
  * async method to return single recipe
  * uses fetch API of browser which returns a promise
@@ -55,20 +39,12 @@ const fetchRecipe = async function () {
   }
 };
 
-// API : https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
+/********************** MAIN STARTS **********************/
 
 console.log("hello");
 
-/**
- * calling async method to fetch recipe detail on window url hashchangeevent
- */
+const init = function () {
+  recipeView.addHandlerRender(fetchRecipe);
+};
 
-/**
- * calling async method to fetch recipe detail on window load event
- */
-
-["hashchange", "load"].forEach((event) =>
-  window.addEventListener(event, fetchRecipe)
-);
+init();
