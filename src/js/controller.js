@@ -1,6 +1,7 @@
 import icons from "url:../img/icons.svg";
 import "core-js/stable"; // polyfilling everything else
 import "regenerator-runtime/runtime"; // polyfilling async/await
+import * as model from "./model";
 
 const recipeContainer = document.querySelector(".recipe");
 
@@ -36,50 +37,24 @@ const renderSpinner = function (parentEl) {
  */
 const fetchRecipe = async function () {
   try {
-    /**
-     *  1) Loading recipe from API
-     */
-
     const recipeFragment = window.location.hash; // returns the path variable followed with '#' symbol
     // guard clause
     if (!recipeFragment || recipeFragment.length === 1) return;
 
     renderSpinner(recipeContainer);
     const recipeId = recipeFragment.slice(1);
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`
-      // "https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bcf8d"
-    );
-
-    const recipeData = await res.json();
 
     /**
-     *  Handling failed fetch responses
+     *  1) Loading recipe from API
      */
-    if (!res.ok) {
-      throw new Error(`${recipeData.message}(${res.status})`);
-    }
-
-    let { recipe } = recipeData.data;
-
-    console.log(recipe);
-
-    recipe = {
-      id: recipe.id,
-      imageUrl: recipe.image_url,
-      ingredients: recipe.ingredients,
-      publisher: recipe.publisher,
-      servings: recipe.servings,
-      sourceUrl: recipe.source_url,
-      title: recipe.title,
-      cookingTime: recipe.cooking_time,
-    };
-
-    console.log(recipe);
+    await model.loadRecipe(recipeId);
 
     /**
      *  2) Rendering recipe in recipe container
      */
+
+    const { recipe } = model.state;
+
     const recipeMarkup = `
     <figure class="recipe__fig">
     <img src="${recipe.imageUrl}" alt="${recipe.title}" class="recipe__img" />
