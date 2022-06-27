@@ -3,6 +3,13 @@ import "core-js/stable"; // polyfilling everything else
 import "regenerator-runtime/runtime"; // polyfilling async/await
 import * as model from "./model";
 import recipeView from "./views/recipeView";
+import searchView from "./views/searchView.js";
+import searchResults from "./views/searchResults";
+
+// Hot Module Replacement from parcel
+if (module.hot) {
+  module.hot.accept();
+}
 
 /**
  * async method to return single recipe
@@ -37,12 +44,33 @@ const fetchRecipe = async function () {
   }
 };
 
-/********************** MAIN STARTS **********************/
+/**
+ * Function to load the search query results and then pass to the view registerHandler method
+ * whenever there is change in the search bar element
+ */
 
-console.log("hello");
+const querySearch = async function () {
+  try {
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    searchView.clearSearchQuery();
+
+    // 1. from controller call model's method to get search results and update in state object
+    await model.loadSearchResults(query);
+
+    // 2. pass model.state.search.recipes to search results views' method to render the search results in dom.
+    // console.log(model.state.search.recipes);
+    searchResults.render(model.state.search.recipes);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const init = function () {
   recipeView.addHandlerRender(fetchRecipe);
+  searchView.addSearchHandler(querySearch);
 };
 
+/********************** MAIN STARTS **********************/
 init();
