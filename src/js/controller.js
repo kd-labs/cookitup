@@ -5,6 +5,7 @@ import * as model from "./model";
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView.js";
 import searchResults from "./views/searchResults";
+import paginationView from "./views/paginationView";
 
 // Hot Module Replacement from parcel
 if (module.hot) {
@@ -60,8 +61,11 @@ const querySearch = async function () {
     await model.loadSearchResults(query);
 
     // 2. pass model.state.search.recipes to search results views' method to render the search results in dom.
-    // console.log(model.state.search.recipes);
-    searchResults.render(model.state.search.recipes);
+    // searchResults.render(model.state.search.recipes);
+    searchResults.render(model.getSearchResultsPage(2));
+
+    // 3. pass the search data to render pagination buttons
+    paginationView.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
