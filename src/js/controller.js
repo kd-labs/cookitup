@@ -62,7 +62,7 @@ const querySearch = async function () {
 
     // 2. pass model.state.search.recipes to search results views' method to render the search results in dom.
     // searchResults.render(model.state.search.recipes);
-    searchResults.render(model.getSearchResultsPage(2));
+    searchResults.render(model.getSearchResultsPage());
 
     // 3. pass the search data to render pagination buttons
     paginationView.render(model.state.search);
@@ -71,9 +71,19 @@ const querySearch = async function () {
   }
 };
 
+// Publisher Subscriber model
+// view is the publisher and the controller is the subscriber
+// controller registers it's hook(method to be called in response to an event) with the publisher i.e. pagination view
+const pageNavigationHandler = function (pageNum) {
+  searchResults.render(model.getSearchResultsPage(pageNum));
+
+  paginationView.render(model.state.search);
+};
+
 const init = function () {
   recipeView.addHandlerRender(fetchRecipe);
   searchView.addSearchHandler(querySearch);
+  paginationView.addClickHandler(pageNavigationHandler);
 };
 
 /********************** MAIN STARTS **********************/

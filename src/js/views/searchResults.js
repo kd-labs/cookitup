@@ -1,5 +1,4 @@
 import View from "./view";
-import icons from "url:../../img/icons.svg";
 
 class SearchResults extends View {
   // parent element of search result view
