@@ -75,3 +75,12 @@ export const getSearchResultsPage = function (page = state.search.page) {
   const end = page * state.search.resultsPerPage;
   return state.search.results.slice(start, end);
 };
+
+export const updateServings = function (newServings) {
+  // 1. make changes to model.state.recipe's object servings
+  state.recipe.ingredients.forEach((ingredient) => {
+    ingredient.quantity =
+      ingredient.quantity * (newServings / state.recipe.servings);
+  });
+  state.recipe.servings = newServings;
+};

@@ -22,6 +22,28 @@ class RecipeView extends View {
     );
   }
 
+  addServingsUpdateHandler(fn) {
+    // check why element with this class is not getting selected
+    // const htmlEl = this._parentElement.querySelector(".recipe__info-buttons");
+    // console.log(htmlEl);
+    this._parentElement.addEventListener("click", function (e) {
+      // 1. get the servings update button element from dom
+      const btn = e.target.closest(".btn--tiny");
+
+      // guard clause
+      if (!btn) return;
+
+      console.log(btn);
+
+      // 3. check if event is from increase button or decrease button
+      //    if increase-button, call handler fn with +1 servings
+      //    else decrease-button, call handler fn with -1 servings
+      btn.classList.contains("btn--increase-servings")
+        ? fn("plus")
+        : fn("minus");
+    });
+  }
+
   _generateMarkup() {
     return `
     <figure class="recipe__fig">
@@ -53,7 +75,7 @@ class RecipeView extends View {
       <span class="recipe__info-text">servings</span>
 
       <div class="recipe__info-buttons">
-        <button class="btn--tiny btn--increase-servings">
+        <button class="btn--tiny btn--decrease-servings">
           <svg>
             <use href="${icons}#icon-minus-circle"></use>
           </svg>

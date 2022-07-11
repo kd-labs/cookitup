@@ -33,10 +33,12 @@ const fetchRecipe = async function () {
     await model.loadRecipe(recipeId);
 
     /**
-     *  2) Rendering recipe in recipe container
+     *  2) Rendering recipe in recipe details view container
      */
 
     const { recipe } = model.state;
+
+    console.log(recipe);
 
     recipeView.render(recipe);
   } catch (err) {
@@ -80,10 +82,27 @@ const pageNavigationHandler = function (pageNum) {
   paginationView.render(model.state.search);
 };
 
+// creating handler which will be passed/registered to recipe details view
+// the handler will be invoked in the recipe details view as part of click event handler for servings '+' and '-' button
+
+const updateServingsHandler = function (operation) {
+  // 1. update the recipe servings in the model
+  if (operation === "plus")
+    model.updateServings(model.state.recipe.servings + 1);
+  else {
+    if (model.state.recipe.servings === 1) return;
+    model.updateServings(model.state.recipe.servings - 1);
+  }
+
+  // 2. update the recipe servings view in recipe details view
+  recipeView.render(model.state.recipe);
+};
+
 const init = function () {
   recipeView.addHandlerRender(fetchRecipe);
   searchView.addSearchHandler(querySearch);
   paginationView.addClickHandler(pageNavigationHandler);
+  recipeView.addServingsUpdateHandler(updateServingsHandler);
 };
 
 /********************** MAIN STARTS **********************/
