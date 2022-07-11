@@ -94,8 +94,9 @@ const updateServingsHandler = function (operation) {
     model.updateServings(model.state.recipe.servings - 1);
   }
 
-  // 2. update the recipe servings view in recipe details view
-  recipeView.render(model.state.recipe);
+  // 2. update the recipe servings in recipe details view
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {
