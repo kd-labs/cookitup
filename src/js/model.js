@@ -52,6 +52,7 @@ export const loadSearchResults = async function (query) {
     const data = await getJson(`${API_URL}?search=${query}`); // calling getJson from helpers file
 
     state.search.query = query;
+    state.search.page = 1;
     state.search.results = data.data.recipes.map((recipe) => {
       return {
         id: recipe.id,
@@ -68,6 +69,7 @@ export const loadSearchResults = async function (query) {
 
 /*
   function to get paginated results of search
+  returns : list of recipe objects as per current page
 */
 export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = +page;
