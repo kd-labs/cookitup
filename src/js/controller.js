@@ -6,6 +6,7 @@ import recipeView from "./views/recipeView";
 import searchView from "./views/searchView.js";
 import searchResults from "./views/searchResults";
 import paginationView from "./views/paginationView";
+import bookmarksView from "./views/bookmarksView";
 
 // Hot Module Replacement from parcel
 if (module.hot) {
@@ -20,6 +21,9 @@ if (module.hot) {
 const fetchRecipe = async function () {
   try {
     const recipeFragment = window.location.hash; // returns the path variable followed with '#' symbol
+
+    // render the bookmarked recipes loaded from local storage
+    // bookmarksView.render(model.state.bookmarks);
 
     // guard clause
     if (!recipeFragment || recipeFragment.length === 1) return;
@@ -41,6 +45,7 @@ const fetchRecipe = async function () {
     console.log(recipe);
     console.log(model.state.bookmarks);
 
+    // render the recipe with recipe id in window.location in recipe details view
     recipeView.render(recipe);
   } catch (err) {
     console.log(err);
@@ -111,9 +116,17 @@ const updateBookmark = function () {
 
   // call recipe view method to change the bookmakr icon to filled incon
   recipeView.updateRecipeBookmarked();
+
+  // call bookmarks view render method to show all the bookmarked recipe
+  bookmarksView.render(model.state.bookmarks);
+};
+
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
 };
 
 const init = function () {
+  bookmarksView.addBookmarksRendererHandler(controlBookmarks);
   recipeView.addHandlerRender(fetchRecipe);
   recipeView.addServingsUpdateHandler(updateServingsHandler);
   recipeView.addBookmarkHandler(updateBookmark);
