@@ -102,13 +102,13 @@ export const addBookmark = function (recipe) {
   state.bookmarks.push(recipe);
 
   // mark current recipe as bookmarked
-  if (state.recipe.id === recipe.id) state.recipe.bookmarked = true;
+  if (state.recipe.id === recipe.id) state.recipe.bookmark = true;
 };
 
-export const removeBookmark = function (recipe) {
+export const removeBookmark = function (id) {
   // push the recipe passed into bookmarks array in state object
-  state.bookmarks = state.bookmarks.filter((rec) => rec.id !== recipe.id);
+  state.bookmarks = state.bookmarks.filter((rec) => rec.id !== id);
 
   // mark current recipe as bookmarked
-  if (state.recipe.id === recipe.id) state.recipe.bookmarked = false;
+  if (state.recipe.id === id) state.recipe.bookmark = false;
 };

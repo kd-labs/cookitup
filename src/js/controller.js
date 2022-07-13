@@ -106,8 +106,8 @@ const updateServingsHandler = function (operation) {
  */
 const updateBookmark = function () {
   // call model method to add current recipe i.e. state.recipe into state.bookmarks
-  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
-  else model.removeBookmark(model.state.recipe);
+  if (!model.state.recipe.bookmark) model.addBookmark(model.state.recipe);
+  else model.removeBookmark(model.state.recipe.id);
 
   // call recipe view method to change the bookmakr icon to filled incon
   recipeView.updateRecipeBookmarked();

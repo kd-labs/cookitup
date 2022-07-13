@@ -58,7 +58,9 @@ class RecipeView extends View {
   updateRecipeBookmarked() {
     this._parentElement.querySelector(".btn--bookmark").innerHTML = `
       <svg class="">
-        <use href="${icons}#icon-bookmark-fill"></use>
+        <use href="${icons}#icon-bookmark${
+      this._data.bookmark ? "-fill" : ""
+    }"></use>
       </svg>
     `;
   }
