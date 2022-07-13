@@ -15,6 +15,8 @@ export const state = {
   },
 };
 
+const bookmarkedRecipeKey = "bookmarkedRecipes";
+
 /**
  *  Function to load a single recipe from API
  */
@@ -103,6 +105,7 @@ export const addBookmark = function (recipe) {
 
   // mark current recipe as bookmarked
   if (state.recipe.id === recipe.id) state.recipe.bookmark = true;
+  pushBookmarkedRecipesToLocalStorage();
 };
 
 export const removeBookmark = function (id) {
@@ -111,4 +114,20 @@ export const removeBookmark = function (id) {
 
   // mark current recipe as bookmarked
   if (state.recipe.id === id) state.recipe.bookmark = false;
+  pushBookmarkedRecipesToLocalStorage();
 };
+
+/**
+ * method to push bookmarks array to local storage.
+ * data in local storage persists across sessions for a given page/domain
+ */
+const pushBookmarkedRecipesToLocalStorage = function () {
+  localStorage.setItem(bookmarkedRecipeKey, JSON.stringify(state.bookmarks));
+};
+
+const loadBookmarkedRecipesFromLocalStorage = function () {
+  const storage = localStorage.getItem(bookmarkedRecipeKey);
+  if (storage) state.bookmarks = JSON.parse(storage);
+};
+
+loadBookmarkedRecipesFromLocalStorage();
