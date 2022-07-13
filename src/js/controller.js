@@ -39,6 +39,7 @@ const fetchRecipe = async function () {
     const { recipe } = model.state;
 
     console.log(recipe);
+    console.log(model.state.bookmarks);
 
     recipeView.render(recipe);
   } catch (err) {
@@ -99,11 +100,25 @@ const updateServingsHandler = function (operation) {
   recipeView.update(model.state.recipe);
 };
 
+/**
+ * handler method defined in controller which is passed into recipe details view's register method
+ * this method will be called as part of addEventHandler for click event on bookmark button
+ */
+const updateBookmark = function () {
+  // call model method to add current recipe i.e. state.recipe into state.bookmarks
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.removeBookmark(model.state.recipe);
+
+  // call recipe view method to change the bookmakr icon to filled incon
+  recipeView.updateRecipeBookmarked();
+};
+
 const init = function () {
   recipeView.addHandlerRender(fetchRecipe);
+  recipeView.addServingsUpdateHandler(updateServingsHandler);
+  recipeView.addBookmarkHandler(updateBookmark);
   searchView.addSearchHandler(querySearch);
   paginationView.addClickHandler(pageNavigationHandler);
-  recipeView.addServingsUpdateHandler(updateServingsHandler);
 };
 
 /********************** MAIN STARTS **********************/

@@ -33,8 +33,6 @@ class RecipeView extends View {
       // guard clause
       if (!btn) return;
 
-      console.log(btn);
-
       // 3. check if event is from increase button or decrease button
       //    if increase-button, call handler fn with +1 servings
       //    else decrease-button, call handler fn with -1 servings
@@ -42,6 +40,27 @@ class RecipeView extends View {
         ? fn("plus")
         : fn("minus");
     });
+  }
+
+  addBookmarkHandler(handlerFn) {
+    this._parentElement.addEventListener("click", function (e) {
+      console.log("bookmark click event happened");
+      // check if there bookmark class btn in the click event path
+      const bookmarkBtnEl = e.target.closest(".btn--bookmark");
+
+      // guard clause
+      if (!bookmarkBtnEl) return;
+
+      handlerFn();
+    });
+  }
+
+  updateRecipeBookmarked() {
+    this._parentElement.querySelector(".btn--bookmark").innerHTML = `
+      <svg class="">
+        <use href="${icons}#icon-bookmark-fill"></use>
+      </svg>
+    `;
   }
 
   _generateMarkup() {
@@ -90,9 +109,11 @@ class RecipeView extends View {
 
     <div class="recipe__user-generated">
     </div>
-    <button class="btn--round">
+    <button class="btn--round btn--bookmark">
       <svg class="">
-        <use href="${icons}#icon-bookmark-fill"></use>
+        <use href="${icons}#icon-bookmark${
+      this._data.bookmark ? "-fill" : ""
+    }"></use>
       </svg>
     </button>
   </div>

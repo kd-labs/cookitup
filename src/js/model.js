@@ -6,6 +6,7 @@ import { getJson } from "./helpers.js";
  */
 export const state = {
   recipe: {},
+  bookmarks: [],
   search: {
     query: "",
     results: [],
@@ -33,7 +34,12 @@ export const loadRecipe = async function (recipeId) {
       sourceUrl: recipe.source_url,
       title: recipe.title,
       cookingTime: recipe.cooking_time,
+      bookmarked: false,
     };
+
+    if (state.bookmarks.some((bookmark) => bookmark.id === recipeId)) {
+      state.recipe.bookmark = true;
+    } else state.recipe.bookmark = false;
 
     // console.log(state.recipe);
   } catch (error) {
@@ -85,4 +91,24 @@ export const updateServings = function (newServings) {
       ingredient.quantity * (newServings / state.recipe.servings);
   });
   state.recipe.servings = newServings;
+};
+
+/*
+  method to bookmark a recipe i.e. pushing a recipe to bookamrk array in state object
+*/
+
+export const addBookmark = function (recipe) {
+  // push the recipe passed into bookmarks array in state object
+  state.bookmarks.push(recipe);
+
+  // mark current recipe as bookmarked
+  if (state.recipe.id === recipe.id) state.recipe.bookmarked = true;
+};
+
+export const removeBookmark = function (recipe) {
+  // push the recipe passed into bookmarks array in state object
+  state.bookmarks = state.bookmarks.filter((rec) => rec.id !== recipe.id);
+
+  // mark current recipe as bookmarked
+  if (state.recipe.id === recipe.id) state.recipe.bookmarked = false;
 };
