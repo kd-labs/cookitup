@@ -76,7 +76,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterbegin", errorMarkup);
   };
 
-  _renderSuccess = function (message = this._successMessage) {
+  renderSuccess = function (message = this._successMessage) {
     const successMarkup = `<div class="message">
             <div>
               <svg>

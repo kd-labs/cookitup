@@ -7,6 +7,7 @@ import searchView from "./views/searchView.js";
 import searchResults from "./views/searchResults";
 import paginationView from "./views/paginationView";
 import bookmarksView from "./views/bookmarksView";
+import addRecipeView from "./views/addRecipeView";
 
 // Hot Module Replacement from parcel
 if (module.hot) {
@@ -125,6 +126,39 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const addNewRecipeHandler = async function (recipe) {
+  console.log(recipe);
+
+  try {
+    // show spinner while recipe is being loaded
+    addRecipeView.renderSpinner();
+
+    // upload new recipe to API using function in model
+    await model.uploadRecipe(recipe);
+    console.log(model.state.recipe);
+
+    // render recipe
+    recipeView.render(model.state.recipe);
+
+    // display success message
+    addRecipeView.renderSuccess();
+
+    // render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // change ID of recipe
+    window.history.pushState(null, "", `#${model.state.recipe.id}`);
+
+    // close add recipe form window
+    setTimeout(function () {
+      addRecipeView._toggleHiddenClass();
+    }, 2500);
+  } catch (error) {
+    console.error(error);
+    addRecipeView._renderError(error.message);
+  }
+};
+
 const init = function () {
   bookmarksView.addBookmarksRendererHandler(controlBookmarks);
   recipeView.addHandlerRender(fetchRecipe);
@@ -132,6 +166,7 @@ const init = function () {
   recipeView.addBookmarkHandler(updateBookmark);
   searchView.addSearchHandler(querySearch);
   paginationView.addClickHandler(pageNavigationHandler);
+  addRecipeView.addRecipeSubmitHandler(addNewRecipeHandler);
 };
 
 /********************** MAIN STARTS **********************/

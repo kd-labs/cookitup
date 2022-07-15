@@ -1,4 +1,5 @@
 import View from "./view";
+import icons from "url:../../img/icons.svg";
 
 class BookmarksView extends View {
   // parent element of search result view
@@ -29,6 +30,11 @@ class BookmarksView extends View {
               <div class="preview__data">
                 <h4 class="preview__title">${res.title}</h4>
                 <p class="preview__publisher">${res.publisher}</p>
+                <div class="preview__user-generated ${res.key ? "" : "hidden"}">
+                  <svg>
+                    <use href="${icons}#icon-user"></use>
+                  </svg>
+                </div>
               </div>
             </a>
           </li>

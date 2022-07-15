@@ -22,6 +22,31 @@ export const getJson = async function (url) {
   }
 };
 
+export const sendJson = async function (url, recipeToUpload) {
+  try {
+    const fetchRes = fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipeToUpload),
+    });
+    const res = await Promise.race([fetchRes, timeout(fetchTimeout)]);
+    const data = await res.json();
+    /**
+     *  Handling failed fetch responses
+     */
+    if (!res.ok) {
+      throw new Error(`${data.message}(${res.status})`);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 const timeout = function (s) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
